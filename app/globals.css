@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-poppins);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-emerald: var(--emerald);
+  --color-emerald-light: var(--emerald-light);
+  --color-emerald-dark: var(--emerald-dark);
+  --color-page-bg: var(--page-bg);
+  --color-text-heading: var(--text-heading);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #1A1D1F;
+  --card: #FFFFFF;
+  --card-foreground: #1A1D1F;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1D1F;
+  --primary: #00C896;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F6F8;
+  --secondary-foreground: #1A1D1F;
+  --muted: #F5F6F8;
+  --muted-foreground: #6F767E;
+  --accent: #E9FBF3;
+  --accent-foreground: #0FBE86;
+  --destructive: #E5484D;
+  --border: #E4E6EA;
+  --input: #E4E6EA;
+  --ring: #00C896;
+  --chart-1: #00C896;
+  --chart-2: #0FBE86;
+  --chart-3: #E9FBF3;
+  --chart-4: #6F767E;
+  --chart-5: #1A1D1F;
+  --radius: 0.75rem;
+  --emerald: #00C896;
+  --emerald-light: #E9FBF3;
+  --emerald-dark: #0FBE86;
+  --page-bg: #F5F6F8;
+  --text-heading: #1A1D1F;
+  --text-muted: #6F767E;
+  --border-subtle: #E4E6EA;
+  --sidebar: #F5F6F8;
+  --sidebar-foreground: #1A1D1F;
+  --sidebar-primary: #00C896;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E9FBF3;
+  --sidebar-accent-foreground: #0FBE86;
+  --sidebar-border: #E4E6EA;
+  --sidebar-ring: #00C896;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-page-bg text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .text-heading {
+    color: var(--text-heading);
+  }
+  .text-muted-custom {
+    color: var(--text-muted);
+  }
+  .bg-page {
+    background-color: var(--page-bg);
+  }
+  .border-subtle {
+    border-color: var(--border-subtle);
+  }
+  .bg-emerald-custom {
+    background-color: var(--emerald);
+  }
+  .bg-emerald-light-custom {
+    background-color: var(--emerald-light);
+  }
+  .text-emerald-custom {
+    color: var(--emerald);
+  }
+  .border-emerald-custom {
+    border-color: var(--emerald);
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
