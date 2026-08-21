@@ -58,40 +58,15 @@ export function LandingPage() {
                     Get Started — It&apos;s Free
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="rounded-full px-8 text-base h-12 w-full sm:w-auto border-border-subtle">
-                  Log In
-                </Button>
+                <Link href="/login">
+                  <Button variant="outline" size="lg" className="rounded-full px-8 text-base h-12 w-full sm:w-auto border-border-subtle">
+                    Log In
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </div>
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-emerald-light/20 to-transparent" />
-        </section>
-
-        {/* Features */}
-        <section className="bg-white py-16 sm:py-24">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              {features.map((f) => (
-                <motion.div
-                  key={f.title}
-                  variants={itemVariants}
-                  className="bg-page rounded-2xl p-6 border border-border-subtle"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-emerald-light flex items-center justify-center text-primary mb-4">
-                    {f.icon}
-                  </div>
-                  <h3 className="font-semibold text-heading mb-2">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
         </section>
 
         {/* How it works */}
@@ -119,30 +94,6 @@ export function LandingPage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="bg-primary py-16 sm:py-20">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                Ready to take control of your pay?
-              </h2>
-              <p className="text-white/80 mb-8 max-w-md mx-auto">
-                Join thousands of workers who&apos;ve already made the switch.
-              </p>
-              <Link href="/signup">
-                <Button size="lg" className="bg-white text-primary hover:bg-gray-50 rounded-full px-8 text-base font-semibold h-12">
-                  Create Free Account
-                </Button>
-              </Link>
             </motion.div>
           </div>
         </section>

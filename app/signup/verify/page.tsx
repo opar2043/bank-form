@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,15 +9,11 @@ import { useSignup } from "@/lib/signup-store";
 import { maskEmail, maskPhone } from "@/lib/format";
 import { toast } from "sonner";
 
-const CORRECT_OTP = "123456";
-const MAX_ATTEMPTS = 3;
 const RESEND_SECONDS = 60;
 
 export default function VerifyPage() {
   const { data, updateData, nextStep } = useSignup();
   const [code, setCode] = useState("");
-  const [error, setError] = useState(false);
-  const [attempts, setAttempts] = useState(0);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [timer, setTimer] = useState(RESEND_SECONDS);
@@ -31,48 +27,29 @@ export default function VerifyPage() {
     setCanResend(true);
   }, [timer]);
 
-  const verify = useCallback(
-    async (otp: string) => {
-      setLoading(true);
-      setError(false);
-      await new Promise((r) => setTimeout(r, 1500));
+  const proceed = () => {
+    setLoading(true);
+    toast.success("Verification successful!");
+    setTimeout(() => {
+      updateData({ verified: true });
+      setSuccess(true);
+      setTimeout(() => nextStep(), 1200);
+    }, 800);
+  };
 
-      if (otp === CORRECT_OTP) {
-        setSuccess(true);
-        updateData({ verified: true });
-        toast.success("Verification successful!");
-        setTimeout(() => nextStep(), 1200);
-      } else {
-        setAttempts((a) => {
-          const newA = a + 1;
-          if (newA >= MAX_ATTEMPTS) {
-            toast.error("Too many failed attempts. Please request a new code.");
-          } else {
-            toast.error(`Incorrect code. ${MAX_ATTEMPTS - newA} attempts remaining.`);
-          }
-          return newA;
-        });
-        setError(true);
-        setCode("");
-        setLoading(false);
-      }
-    },
-    [updateData, nextStep]
-  );
+  const handleComplete = () => {
+    if (loading || success) return;
+    proceed();
+  };
 
-  const handleComplete = useCallback(
-    (otp: string) => {
-      if (attempts >= MAX_ATTEMPTS) return;
-      verify(otp);
-    },
-    [attempts, verify]
-  );
+  const handleVerifyClick = () => {
+    if (loading || success) return;
+    proceed();
+  };
 
   const handleResend = async () => {
     setCanResend(false);
     setTimer(RESEND_SECONDS);
-    setAttempts(0);
-    setError(false);
     toast.success("New verification code sent!");
   };
 
@@ -117,20 +94,10 @@ export default function VerifyPage() {
               <div className="mb-6">
                 <OtpInput
                   value={code}
-                  onChange={(v) => { setCode(v); setError(false); }}
+                  onChange={setCode}
                   onComplete={handleComplete}
-                  error={error}
                   disabled={loading}
                 />
-                {error && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center text-xs text-destructive mt-3"
-                  >
-                    Incorrect code. Please try again.
-                  </motion.p>
-                )}
               </div>
 
               {loading && (
@@ -141,8 +108,8 @@ export default function VerifyPage() {
               )}
 
               <Button
-                onClick={() => handleComplete(code)}
-                disabled={code.length < 6 || loading || attempts >= MAX_ATTEMPTS}
+                onClick={handleVerifyClick}
+                disabled={loading || success}
                 className="w-full h-12 bg-primary hover:bg-emerald-dark text-white rounded-xl font-semibold"
               >
                 Verify

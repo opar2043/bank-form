@@ -55,7 +55,7 @@ export default function Step3Page() {
       payFrequency: data.payFrequency || "",
       payDay: data.payDay || "",
       monthlyIncome: data.monthlyIncome || "",
-      bankMethod: (data.bankMethod || "") as "" | "manual" | "connect",
+      bankMethod: (data.bankMethod || "manual") as "manual" | "connect",
       routingNumber: data.routingNumber || "",
       accountNumber: data.accountNumber || "",
     },
@@ -71,12 +71,13 @@ export default function Step3Page() {
     setConnectedBank(bank);
     setConnectingBank(false);
     form.setValue("bankMethod", "connect");
+    form.trigger("bankMethod");
     toast.success(`Connected to ${bank} successfully!`);
     setTimeout(() => setBankConnectOpen(false), 800);
   };
 
-  const onSubmit = (formData: any) => {
-    updateData(formData as IncomeBankData);
+  const onSubmit = (formData: { payFrequency: string; monthlyIncome: string; bankMethod: "manual" | "connect"; payDay?: string; routingNumber?: string; accountNumber?: string }) => {
+    updateData(formData);
     nextStep();
   };
 
@@ -107,7 +108,10 @@ export default function Step3Page() {
               value={payFrequency}
               onChange={(v) => {
                 form.setValue("payFrequency", v);
-                if (!showDayQuestion) form.setValue("payDay", "");
+                form.trigger("payFrequency");
+                if (v !== "Weekly" && v !== "Every other week") {
+                  form.setValue("payDay", "");
+                }
               }}
             />
             {form.formState.errors.payFrequency?.message && (
@@ -126,8 +130,11 @@ export default function Step3Page() {
                 </p>
                 <CompactRadioGroup
                   options={dayOfWeekOptions}
-                  value={payFrequency === "Every other week" ? (form.watch("payDay") || "") : ""}
-                  onChange={(v) => form.setValue("payDay", v)}
+                  value={form.watch("payDay") || ""}
+                  onChange={(v) => {
+                    form.setValue("payDay", v);
+                    form.trigger("payDay");
+                  }}
                 />
               </motion.div>
             )}
@@ -170,9 +177,13 @@ export default function Step3Page() {
               value={bankMethod}
               onChange={(v) => {
                 form.setValue("bankMethod", v as "manual" | "connect");
+                form.trigger("bankMethod");
                 if (v === "connect") setBankConnectOpen(true);
               }}
             />
+            {form.formState.errors.bankMethod?.message && (
+              <p className="text-xs text-destructive">{form.formState.errors.bankMethod.message}</p>
+            )}
 
             {bankMethod === "connect" && connectedBank && (
               <div className="flex items-center gap-2 text-sm text-primary bg-emerald-light/50 rounded-lg p-3">
@@ -206,10 +217,6 @@ export default function Step3Page() {
                   value={form.watch("accountNumber")}
                 />
               </motion.div>
-            )}
-
-            {form.formState.errors.bankMethod?.message && (
-              <p className="text-xs text-destructive">{form.formState.errors.bankMethod.message}</p>
             )}
           </div>
 

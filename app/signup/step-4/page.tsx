@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,12 +23,11 @@ const idTypeOptions = [
 ];
 
 export default function Step4Page() {
-  const { data, updateData, nextStep, reset } = useSignup();
+  const { data, updateData, nextStep } = useSignup();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const router = useRouter();
 
-  const form = useForm({
+  const form = useForm<IdentificationData>({
     resolver: zodResolver(identificationSchema),
     defaultValues: {
       idType: data.idType || "",
@@ -43,7 +41,7 @@ export default function Step4Page() {
   const idType = form.watch("idType");
   const showState = idType && idType !== "passport";
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: IdentificationData) => {
     setSubmitting(true);
     setSubmitError("");
     await new Promise((r) => setTimeout(r, 2500));
@@ -89,6 +87,7 @@ export default function Step4Page() {
                 form.setValue("idType", v);
                 form.setValue("idNumber", "");
                 form.setValue("idState", "");
+                form.trigger("idType");
               }}
             />
             {form.formState.errors.idType?.message && (
@@ -111,14 +110,17 @@ export default function Step4Page() {
                     maxLength={30}
                     className="w-full h-12 rounded-xl border border-border-subtle bg-white text-foreground font-medium px-3 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                     value={form.watch("idNumber")}
-                    onChange={(e) => form.setValue("idNumber", e.target.value)}
+                    onChange={(e) => {
+                      form.setValue("idNumber", e.target.value);
+                      form.trigger("idNumber");
+                    }}
                   />
                   {form.formState.errors.idNumber?.message && (
                     <p className="text-xs text-destructive">{form.formState.errors.idNumber.message}</p>
                   )}
                   {form.watch("idNumber") && (
                     <p className="text-xs text-muted-foreground">
-                      Visible: ••••{form.watch("idNumber").slice(-4)}
+                      Visible: {"••••"}{form.watch("idNumber").slice(-4)}
                     </p>
                   )}
                 </div>
@@ -127,7 +129,10 @@ export default function Step4Page() {
                   <FloatingLabelSelect
                     label="Issuing State"
                     value={form.watch("idState") || ""}
-                    onChange={(v) => form.setValue("idState", v)}
+                    onChange={(v) => {
+                      form.setValue("idState", v);
+                      form.trigger("idState");
+                    }}
                     options={stateList.map((s) => ({ value: s, label: s }))}
                     placeholder="Select state..."
                     error={form.formState.errors.idState?.message}
@@ -147,7 +152,10 @@ export default function Step4Page() {
             <label className="flex items-start gap-3 cursor-pointer">
               <Checkbox
                 checked={form.watch("agreeToTerms")}
-                onCheckedChange={(v) => form.setValue("agreeToTerms", v as boolean)}
+                onCheckedChange={(v) => {
+                  form.setValue("agreeToTerms", v as boolean);
+                  form.trigger("agreeToTerms");
+                }}
                 className="mt-0.5 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
               />
               <span className="text-sm text-foreground leading-snug">

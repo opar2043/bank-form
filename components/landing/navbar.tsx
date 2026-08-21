@@ -23,9 +23,11 @@ export function Navbar() {
           <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Terms
           </Link>
-          <Button variant="ghost" size="sm" className="text-muted-foreground">
-            Log In
-          </Button>
+          <Link href="/login">
+            <Button variant="ghost" size="sm" className="text-muted-foreground">
+              Log In
+            </Button>
+          </Link>
           <Link href="/signup">
             <Button size="sm" className="bg-primary hover:bg-emerald-dark text-white rounded-full px-5">
               Get Started
@@ -53,9 +55,11 @@ export function Navbar() {
             Terms & Conditions
           </Link>
           <div className="pt-2 space-y-2">
-            <Button variant="ghost" className="w-full text-muted-foreground" onClick={() => setOpen(false)}>
-              Log In
-            </Button>
+            <Link href="/login" className="block" onClick={() => setOpen(false)}>
+              <Button variant="ghost" className="w-full text-muted-foreground">
+                Log In
+              </Button>
+            </Link>
             <Link href="/signup" className="block" onClick={() => setOpen(false)}>
               <Button className="w-full bg-primary hover:bg-emerald-dark text-white rounded-full">
                 Get Started

@@ -55,7 +55,9 @@ export const incomeBankSchema = z.object({
       const num = parseInt(v.replace(/\D/g, ""), 10);
       return !isNaN(num) && num >= 500 && num <= 50000;
     }, "Income must be between $500 and $50,000"),
-  bankMethod: z.enum(["", "manual", "connect"], { required_error: "Please select a bank connection method" }),
+  bankMethod: z.enum(["manual", "connect"], {
+    errorMap: () => ({ message: "Please select a bank connection method" }),
+  }),
   routingNumber: z.string().optional(),
   accountNumber: z.string().optional(),
 }).refine(
